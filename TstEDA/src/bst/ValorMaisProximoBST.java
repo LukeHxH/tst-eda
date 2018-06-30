@@ -1,10 +1,9 @@
-package tsteda;
+package bst;
 
-import java.util.Deque;
-import java.util.LinkedList;
+import java.util.Arrays;
 import java.util.Scanner;
 
-class ContaNosInternosBST {
+class ValorMaisProximoBST {
 
 	private static NodeBST root;
 
@@ -12,35 +11,53 @@ class ContaNosInternosBST {
 		Scanner sc = new Scanner(System.in);
 		String input = sc.nextLine();
 		String[] inputArray = input.split(" ");
+		
+		String input2 = sc.nextLine();
 
 		for (int i = 0; i < inputArray.length; i++)
 			insert(Integer.parseInt(inputArray[i]));
-
-		System.out.println(contaNosInternos());
+		
+		System.out.println(Arrays.toString(preOrder()));
+		System.out.println(valorMaisProximo(Integer.parseInt(input2)));
 	}
-	
-	private static int contaNosInternos() {
-		int count = 0;
-        if (!isEmpty()) {
-            Deque<NodeBST> queue = new LinkedList<NodeBST>();
-            queue.addLast(root);
 
-			while (!queue.isEmpty()) {
+	private static Integer[] preOrder() {
+		Integer[] array = new Integer[size()];
+		preOrder(root, array);
+		return array;
+	}
 
-				NodeBST n = queue.removeFirst();
+	private static void preOrder(NodeBST node, Integer[] array) {
+		if (node != null) {
+			int i = 0;
+			while(i < array.length && array[i] != null) i++;
+			array[i] = node.getData();
+		}
+		
+		if (node.getLeft() != null) preOrder(node.getLeft(), array);
+		if (node.getRight() != null) preOrder(node.getRight(), array);
+	}
 
-				if (n.getLeft() != null || n.getRight() != null)
-					count++;
-
-				if (n.getLeft() != null)
-					queue.addLast(n.getLeft());
-
-				if (n.getRight() != null)
-					queue.addLast(n.getRight());
+	private static int valorMaisProximo(int value) {
+		int out = Integer.MAX_VALUE;
+		NodeBST aux = root;
+		
+		while (aux != null) {
+			int data = aux.getData();
+			if (Math.abs(data - value) < Math.abs(out - value))
+				out = data;
+			
+			if (data < value) {
+				aux = aux.getRight();
+			} else if (data > value) {
+				aux = aux.getLeft();
+			} else if (data == value) {
+				break;
 			}
-        }
-        return count;
-    }
+		}
+		
+		return out;
+	}
 
 	private static boolean isEmpty() {
 		return root == null;
@@ -79,6 +96,18 @@ class ContaNosInternosBST {
 			} else if (e == aux.getData())
 				break;
 		}
+	}
+	
+	private static int size() {
+		return size(root);
+	}
+
+	private static int size(NodeBST node) {
+		int result = 0;
+		if (node != null) {
+			result = 1 + size(node.getLeft()) + size(node.getRight());
+		}
+		return result;
 	}
 
 }

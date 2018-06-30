@@ -1,4 +1,4 @@
-package tsteda;
+package sorting;
 
 public class SelectionSort {
 	void sort(int arr[])

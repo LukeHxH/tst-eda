@@ -1,9 +1,9 @@
-package tsteda;
+package bst;
 
 import java.util.Arrays;
 import java.util.Scanner;
 
-class PredecessorBST {
+class BuscaBST {
 
 	private static NodeBST root;
 
@@ -17,36 +17,7 @@ class PredecessorBST {
 		for (int i = 0; i < inputArray.length; i++)
 			insert(Integer.parseInt(inputArray[i]));
 
-		System.out.println(Arrays.toString(predecessor(Integer.parseInt(input2))));
-	}
-
-	private static Integer[] predecessor(Integer element) {
-		Integer[] auxOut = new Integer[size()];
-		NodeBST aux = search(element);
-		int i = 0;
-		if (aux != null) {
-			auxOut[i++] = aux.getData();
-			if (aux.getLeft() == null) {
-				aux = aux.getParent();
-				while (aux != null) {
-					auxOut[i++] = aux.getData();
-					if (aux.getData() <= element)
-						break;
-					aux = aux.getParent();
-				}
-			} else {
-				aux = aux.getLeft();
-				while (aux != null) {
-					auxOut[i++] = aux.getData();
-					aux = aux.getRight();
-				}
-			}
-		}
-		Integer[] out = new Integer[i];
-		for (int j = 0; j < out.length; j++) {
-			out[j] = auxOut[j];
-		}
-		return out;
+		System.out.println(Arrays.toString(search(Integer.parseInt(input2))));
 	}
 
 	private static boolean isEmpty() {
@@ -88,20 +59,37 @@ class PredecessorBST {
 		}
 	}
 
-	public static NodeBST search(Integer element) {
-		NodeBST aux = null;
+	public static Integer[] search(Integer element) {
+		Integer[] auxOut = new Integer[size()];
+		int i = 0;
 		if (element != null && !isEmpty()) {
-			aux = root;
+			NodeBST aux = root;
 			while (aux != null && aux.getData().compareTo(element) != 0) {
+				auxOut[i] = aux.getData();
+				i++;
 				if (element.compareTo(aux.getData()) > 0) {
 					aux = aux.getRight();
 				} else if (element.compareTo(aux.getData()) < 0) {
 					aux = aux.getLeft();
 				}
 			}
+			
+			if (aux != null) {
+				auxOut[i] = aux.getData();
+			} else {
+				i--;
+			}
 		}
-
-		return aux;
+		
+		Integer[] out = new Integer[i+1];
+		
+		for (int j = 0; j < out.length; j++) {
+			if (auxOut[j] != null){
+				out[j] = auxOut[j];
+			}
+		}
+		
+		return out;
 	}
 	
 	private static int size() {

@@ -1,4 +1,4 @@
-package tsteda;
+package hashtable;
 
 import java.util.ArrayList;
 import java.util.Arrays;

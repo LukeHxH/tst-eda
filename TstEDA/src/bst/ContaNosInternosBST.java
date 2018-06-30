@@ -1,9 +1,10 @@
-package tsteda;
+package bst;
 
-import java.util.Arrays;
+import java.util.Deque;
+import java.util.LinkedList;
 import java.util.Scanner;
 
-class BuscaBST {
+class ContaNosInternosBST {
 
 	private static NodeBST root;
 
@@ -11,14 +12,35 @@ class BuscaBST {
 		Scanner sc = new Scanner(System.in);
 		String input = sc.nextLine();
 		String[] inputArray = input.split(" ");
-		
-		String input2 = sc.nextLine();
 
 		for (int i = 0; i < inputArray.length; i++)
 			insert(Integer.parseInt(inputArray[i]));
 
-		System.out.println(Arrays.toString(search(Integer.parseInt(input2))));
+		System.out.println(contaNosInternos());
 	}
+	
+	private static int contaNosInternos() {
+		int count = 0;
+        if (!isEmpty()) {
+            Deque<NodeBST> queue = new LinkedList<NodeBST>();
+            queue.addLast(root);
+
+			while (!queue.isEmpty()) {
+
+				NodeBST n = queue.removeFirst();
+
+				if (n.getLeft() != null || n.getRight() != null)
+					count++;
+
+				if (n.getLeft() != null)
+					queue.addLast(n.getLeft());
+
+				if (n.getRight() != null)
+					queue.addLast(n.getRight());
+			}
+        }
+        return count;
+    }
 
 	private static boolean isEmpty() {
 		return root == null;
@@ -57,51 +79,6 @@ class BuscaBST {
 			} else if (e == aux.getData())
 				break;
 		}
-	}
-
-	public static Integer[] search(Integer element) {
-		Integer[] auxOut = new Integer[size()];
-		int i = 0;
-		if (element != null && !isEmpty()) {
-			NodeBST aux = root;
-			while (aux != null && aux.getData().compareTo(element) != 0) {
-				auxOut[i] = aux.getData();
-				i++;
-				if (element.compareTo(aux.getData()) > 0) {
-					aux = aux.getRight();
-				} else if (element.compareTo(aux.getData()) < 0) {
-					aux = aux.getLeft();
-				}
-			}
-			
-			if (aux != null) {
-				auxOut[i] = aux.getData();
-			} else {
-				i--;
-			}
-		}
-		
-		Integer[] out = new Integer[i+1];
-		
-		for (int j = 0; j < out.length; j++) {
-			if (auxOut[j] != null){
-				out[j] = auxOut[j];
-			}
-		}
-		
-		return out;
-	}
-	
-	private static int size() {
-		return size(root);
-	}
-
-	private static int size(NodeBST node) {
-		int result = 0;
-		if (node != null) {
-			result = 1 + size(node.getLeft()) + size(node.getRight());
-		}
-		return result;
 	}
 
 }

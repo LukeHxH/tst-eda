@@ -1,4 +1,4 @@
-package tsteda;
+package sorting;
 
 import java.util.Scanner;
 

@@ -1,59 +1,51 @@
-package tsteda;
+package pilhafila;
 
 import java.util.Scanner;
 
-class FilaArray {
-	private static int size;
-	private static Integer[] array;
-	private static int tail;
+class PilhaArray {
 	
+	private static Integer[] array;
+	private static int size;
+	private static int top;
+
 	public static void main(String[] args) {
 		Scanner sc = new Scanner(System.in);
 		String strTamanho = sc.nextLine();
 		size = Integer.parseInt(strTamanho);
 		array = new Integer[size];
-		tail = -1;
+		top = -1;
 		menu(sc);
 	}
 	
 	private static boolean isEmpty() {
-		return tail == -1;
+		return top == -1;
 	}
 	
 	private static boolean isFull() {
-		return tail == (size - 1);
+		return top == (size - 1);
 	}
 	
-	private static void shiftLeft() {
-		for (int i = 0; i <= tail; i++)
-			array[i] = array[(i + 1) % array.length];
-	}
-	
-	private static void insert(Integer n) {
-		if (!isFull() && n != null)
-			array[++tail] = n;
-	}
-	
-	private static Integer remove() {
-		if (!isEmpty()) {
-			Integer out = array[0];
-			shiftLeft();
-			tail--;
-			return out;
-		}
+	private static Integer top() {
+		if (!isEmpty())
+			return array[top];
 		return null;
 	}
 	
-	private static Integer head() {
-		if (isEmpty())
-			return null;
-		return array[0];
+	private static void push(Integer n) {
+		if (!isFull() && n != null)
+			array[++top] = n;
+	}
+	
+	private static Integer pop() {
+		if (!isEmpty())
+			return array[top--];
+		return null;
 	}
 	
 	private static String toStr() {
 		String str = "";
 		
-		for (int i = 0; i <= tail; i++)
+		for (int i = 0; i <= top; i++)
 			str += array[i] + " ";
 		
 		if (str.length() > 0)
@@ -69,38 +61,19 @@ class FilaArray {
 				case "print":
 					print();
 					break;
-				case "add":
+				case "push":
 					if (choice.length == 2)
 						add(Integer.parseInt(choice[1]));
 					break;
-				case "remove":
+				case "pop":
 					remover();
 					break;
-				case "element":
-					element();
+				case "peek":
+					peek();
 					break;
 			}
 			choice = sc.nextLine().split(" ");
 		}
-	}
-
-	private static void element() {
-		if (head() != null)
-			System.out.println(Integer.toString(head()));
-		else
-			System.out.println("empty");
-	}
-
-	private static void remover() {
-		if (remove() == null)
-			System.out.println("empty");
-	}
-
-	private static void add(int n) {
-		if (isFull())
-			System.out.println("full");
-		else
-			insert(n);
 	}
 
 	private static void print() {
@@ -109,4 +82,24 @@ class FilaArray {
 		else
 			System.out.println(toStr());
 	}
+
+	private static void remover() {
+		if (pop() == null)
+			System.out.println("empty");
+	}
+
+	private static void peek() {
+		if (isEmpty())
+			System.out.println("empty");
+		else
+			System.out.println(top().toString());
+	}
+	
+	private static void add(Integer n) {
+		if (isFull())
+			System.out.println("full");
+		else
+			push(n);
+	}
+
 }

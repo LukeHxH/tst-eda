@@ -1,4 +1,4 @@
-package tsteda;
+package sorting;
 
 public class TestCount {
 	    void sort(char arr[])

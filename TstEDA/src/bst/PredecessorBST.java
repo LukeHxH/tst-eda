@@ -1,8 +1,9 @@
-package tsteda;
+package bst;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
-class AlturaBST {
+class PredecessorBST {
 
 	private static NodeBST root;
 
@@ -10,11 +11,42 @@ class AlturaBST {
 		Scanner sc = new Scanner(System.in);
 		String input = sc.nextLine();
 		String[] inputArray = input.split(" ");
+		
+		String input2 = sc.nextLine();
 
 		for (int i = 0; i < inputArray.length; i++)
 			insert(Integer.parseInt(inputArray[i]));
-		
-		System.out.println(height(root));
+
+		System.out.println(Arrays.toString(predecessor(Integer.parseInt(input2))));
+	}
+
+	private static Integer[] predecessor(Integer element) {
+		Integer[] auxOut = new Integer[size()];
+		NodeBST aux = search(element);
+		int i = 0;
+		if (aux != null) {
+			auxOut[i++] = aux.getData();
+			if (aux.getLeft() == null) {
+				aux = aux.getParent();
+				while (aux != null) {
+					auxOut[i++] = aux.getData();
+					if (aux.getData() <= element)
+						break;
+					aux = aux.getParent();
+				}
+			} else {
+				aux = aux.getLeft();
+				while (aux != null) {
+					auxOut[i++] = aux.getData();
+					aux = aux.getRight();
+				}
+			}
+		}
+		Integer[] out = new Integer[i];
+		for (int j = 0; j < out.length; j++) {
+			out[j] = auxOut[j];
+		}
+		return out;
 	}
 
 	private static boolean isEmpty() {
@@ -56,26 +88,37 @@ class AlturaBST {
 		}
 	}
 
-	private static int height(NodeBST node) {
-		int height = -1;
-
-		if (node != null) {
-			int lHeight = height(node.getLeft());
-			int rHeight = height(node.getRight());
-
-			if (lHeight > rHeight) {
-				height = lHeight + 1;
-			} else {
-				height = rHeight + 1;
+	public static NodeBST search(Integer element) {
+		NodeBST aux = null;
+		if (element != null && !isEmpty()) {
+			aux = root;
+			while (aux != null && aux.getData().compareTo(element) != 0) {
+				if (element.compareTo(aux.getData()) > 0) {
+					aux = aux.getRight();
+				} else if (element.compareTo(aux.getData()) < 0) {
+					aux = aux.getLeft();
+				}
 			}
 		}
 
-		return height;
+		return aux;
+	}
+	
+	private static int size() {
+		return size(root);
+	}
+
+	private static int size(NodeBST node) {
+		int result = 0;
+		if (node != null) {
+			result = 1 + size(node.getLeft()) + size(node.getRight());
+		}
+		return result;
 	}
 
 }
 
-class NodeBST {
+/*class NodeBST {
 	private Integer data;
 	private NodeBST right;
 	private NodeBST left;
@@ -123,4 +166,4 @@ class NodeBST {
 	public void setParent(NodeBST parent) {
 		this.parent = parent;
 	}
-}
+}*/

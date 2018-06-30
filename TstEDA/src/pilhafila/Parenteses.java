@@ -1,4 +1,4 @@
-package tsteda;
+package pilhafila;
 
 import java.util.Scanner;
 import java.util.Stack;
