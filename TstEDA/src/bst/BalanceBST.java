@@ -2,7 +2,7 @@ package bst;
 
 import java.util.Scanner;
 
-class AlturaBST {
+class BalanceBST {
 
 	private static NodeBST root;
 
@@ -14,7 +14,68 @@ class AlturaBST {
 		for (int i = 0; i < inputArray.length; i++)
 			insert(Integer.parseInt(inputArray[i]));
 		
-		System.out.println(height(root));
+		NodeBST[] preOrder = preOrderBalance();
+		
+		String out = "";
+		
+		for (int i = 0; i < preOrder.length; i++) {
+			out += preOrder[i].getData() + "," + balance(preOrder[i]) + " ";
+		}
+		
+		System.out.println(out.trim());
+	}
+
+	private static int balance(NodeBST node) {
+		int out = -1;
+		
+		if (node != null) {
+			int left = height(node.getLeft());
+			int right = height(node.getRight());
+			
+			out = left - right;
+		}
+		
+		return out;
+	}
+	
+	private static NodeBST[] preOrderBalance() {
+		NodeBST[] out = new NodeBST[size()];
+		if (!isEmpty()) {
+			preOrderBalance(root, out);
+		}
+		
+		return out;
+	}
+	
+	private static int size() {
+		return size(root);
+	}
+
+	private static int size(NodeBST node) {
+		int out = 0;
+		
+		if (node != null) {
+			out = 1 + size(node.getLeft()) + size(node.getRight());
+		}
+		
+		return out;
+	}
+
+	private static void preOrderBalance(NodeBST node, NodeBST[] array) {
+		int i = 0;
+		
+		while (array[i] != null)
+			i++;
+		
+		array[i] = node;
+		
+		if (node.getLeft() != null) {
+			preOrderBalance(node.getLeft(), array);
+		}
+		
+		if (node.getRight() != null) {
+			preOrderBalance(node.getRight(), array);
+		}
 	}
 
 	private static boolean isEmpty() {
@@ -75,7 +136,7 @@ class AlturaBST {
 
 }
 
-class NodeBST {
+/*class NodeBST {
 	private Integer data;
 	private NodeBST right;
 	private NodeBST left;
@@ -123,8 +184,4 @@ class NodeBST {
 	public void setParent(NodeBST parent) {
 		this.parent = parent;
 	}
-	
-	/*public String toString() {
-		return this.data + "";
-	}*/
-}
+}*/
