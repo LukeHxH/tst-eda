@@ -124,7 +124,11 @@ class NodeBST {
 		this.parent = parent;
 	}
 	
-	/*public String toString() {
+	public String toString() {
 		return this.data + "";
-	}*/
+	}
+
+	public boolean isEmpty() {
+		return this.data == null;
+	}
 }

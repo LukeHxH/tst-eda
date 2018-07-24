@@ -38,15 +38,6 @@ class BalanceBST {
 		return out;
 	}
 	
-	private static NodeBST[] preOrderBalance() {
-		NodeBST[] out = new NodeBST[size()];
-		if (!isEmpty()) {
-			preOrderBalance(root, out);
-		}
-		
-		return out;
-	}
-	
 	private static int size() {
 		return size(root);
 	}
@@ -56,6 +47,15 @@ class BalanceBST {
 		
 		if (node != null) {
 			out = 1 + size(node.getLeft()) + size(node.getRight());
+		}
+		
+		return out;
+	}
+	
+	private static NodeBST[] preOrderBalance() {
+		NodeBST[] out = new NodeBST[size()];
+		if (!isEmpty()) {
+			preOrderBalance(root, out);
 		}
 		
 		return out;
