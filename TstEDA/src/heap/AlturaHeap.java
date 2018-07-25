@@ -1,4 +1,4 @@
-package tsteda;
+package heap;
 
 import java.util.Scanner;
 
